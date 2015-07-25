@@ -1,6 +1,3 @@
----
-output: pdf_document
----
 #POPULATION HEALTH AND ECONOMY IMPACT BY WEATHER EVENT TYPE
 
 ##SYNOPSIS
@@ -22,15 +19,17 @@ Data covers events from 1950 to 2011.
 Loading original data from NOAA Storm Database.
 Loading some libraries.
 
-```{r}
-#URL <- "http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
-#download.file(URL,"data.csv.bz2")
+
+```r
+URL <- "http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+download.file(URL,"data.csv.bz2")
 data <- read.csv("data.csv.bz2")
 ```
 
 Loading needed Libraries
 
-```{r, results = "hide"}
+
+```r
 library(reshape)
 library(ggplot2)
 library(car)
@@ -43,13 +42,16 @@ The most important variable is: EVTYPE, which indicates what type of weather eve
 First, we need to analyze what type of weather event is most harmful with respect to population health (first question)
 In this case, is the amount of fatalities by the weather event type.
 
-```{r}
+
+```r
 Fatal <- aggregate(FATALITIES ~ EVTYPE, data = data, FUN = sum)
 Top5Fatal <- Fatal[order(Fatal$FATALITIES, decreasing = T), ][1:5,]
 ggplot(Top5Fatal, aes(EVTYPE, FATALITIES)) + geom_bar(stat = "identity", fill = "Blue") + 
     ylab("Fatalities") + xlab("Weather Event Type") + theme_bw() + 
     ggtitle("Fatalities by Weather Event Type")
 ```
+
+![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
 
 #### Analysis for Economic Impact
 
@@ -59,7 +61,8 @@ Damage will be calculated by:
 PROPDMG : Amount of the damage in dollars.
 PROPDMGEXP: Multiplier (K: Thousands, M: Millions, B: Billions, H: Hundreds, Number: * 10expN)
 
-```{r}
+
+```r
 data$PROPDMG <- data$PROPDMG * as.numeric(Recode(data$PROPDMGEXP, 
     "'0'=1;'1'=10;'2'=100;'3'=1000;'4'=10000;'5'=100000;'6'=1000000;'7'=10000000;'8'=100000000;'B'=1000000000;'h'=100;'H'=100;'K'=1000;'m'=1000000;'M'=1000000;'-'=0;'?'=0;'+'=0", 
     as.factor.result = FALSE))
@@ -70,6 +73,8 @@ ggplot(Top5Cost, aes(EVTYPE, PROPDMG)) + geom_bar(stat = "identity", fill = "blu
     ggtitle("Economic Consequences By Weather Event Type") + ylab("Cost in Billions of Dollars") + 
     theme_bw() + xlab("Weather Event Type")
 ```
+
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 Top5Cost
 
 ##RESULTS
