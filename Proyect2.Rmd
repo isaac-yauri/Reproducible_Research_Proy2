@@ -23,8 +23,8 @@ Loading original data from NOAA Storm Database.
 Loading some libraries.
 
 ```{r}
-#URL <- "http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
-#download.file(URL,"data.csv.bz2")
+URL <- "http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+download.file(URL,"data.csv.bz2")
 data <- read.csv("data.csv.bz2")
 ```
 
@@ -36,7 +36,7 @@ library(ggplot2)
 library(car)
 ```
 
-The most important variable is: EVTYPE, which indicates what type of weather event cause the damage, injuries, or fatalities.
+The most important variable is: EVTYPE, which indicates what type of weather event cause the damage, injuries, or fatalities.                                        
 
 #### Analysis for Fatalities
 
@@ -49,7 +49,8 @@ Top5Fatal <- Fatal[order(Fatal$FATALITIES, decreasing = T), ][1:5,]
 ggplot(Top5Fatal, aes(EVTYPE, FATALITIES)) + geom_bar(stat = "identity", fill = "Blue") + 
     ylab("Fatalities") + xlab("Weather Event Type") + theme_bw() + 
     ggtitle("Fatalities by Weather Event Type")
-```
+```                                         
+
 
 #### Analysis for Economic Impact
 
